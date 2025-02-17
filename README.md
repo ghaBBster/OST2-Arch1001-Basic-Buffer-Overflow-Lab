@@ -121,18 +121,18 @@ Then, there's a 16-byte stack alignment padding, followed by our second input be
 
 After the call to `memcpy()`, the stack appears as follows:
 
-![Screenshot1](https://github.com/theokwebb/my-writeups/blob/main/BasicBufferOverflow/Images/Screenshot1.png)
+![Screenshot1](https://github.com/ghaBBster/OST2-Arch1001-Basic-Buffer-Overflow-Lab/blob/main/Screenshot1.png)
 
 Currently, `memcpy()` copies `48 bytes` (`6` elements * `sizeof(__int64)` = `6` * `8` bytes) from `array2` to `array1`. However, if we adjust our input to `8`, it will copy `64` bytes, causing `array2` to overflow into the alignment padding and overwrite the return address (`0x00000001400011fe`) with `0xdeadbeef`. Thus, when the `RET` instruction executes at the end of `lame2()`, program control will be transferred to the address `0xdeadbeef`:
 
-![Screenshot2](https://github.com/theokwebb/my-writeups/blob/main/BasicBufferOverflow/Images/Screenshot2.png)
+![Screenshot2](https://github.com/ghaBBster/OST2-Arch1001-Basic-Buffer-Overflow-Lab/blob/main/Screenshot2.png)
 
-![Screenshot3](https://github.com/theokwebb/my-writeups/blob/main/BasicBufferOverflow/Images/Screenshot3.png)
+![Screenshot3](https://github.com/ghaBBster/OST2-Arch1001-Basic-Buffer-Overflow-Lab/blob/main/Screenshot3.png)
 
 Obviously, there is no actual memory location of `0xdeadbeef`. However, if we scroll through the disassembly to find the initial instruction within the `AwesomeSauce()` function, we can use that address as our second input. Then, with the `RET` instruction, we can effectively jump to that specific address, which will execute the code within the `AwesomeSauce()` function.
 
 Input of `8 140001160`:
 
-![Screenshot4](https://github.com/theokwebb/my-writeups/blob/main/BasicBufferOverflow/Images/Screenshot4.png)
+![Screenshot4](https://github.com/ghaBBster/OST2-Arch1001-Basic-Buffer-Overflow-Lab/blob/main/Screenshot4.png)
 
 As always, thank you to Xeno at [OpenSecurityTraining2](https://ost2.fyi) for this lab and incredible course.
